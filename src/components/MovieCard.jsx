@@ -10,7 +10,7 @@ function MovieCard({ movie }) {
   useEffect(() => {
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     const exists = favorites.find((m) => m.id === movie.id);
-    setIsFavorite(!!exists);
+    setIsFavorite(exists);
   }, [movie.id]);
 
   const toggleFavorite = () => {

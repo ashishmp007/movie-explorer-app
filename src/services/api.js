@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "ac316c28347495f1c0971282d59a8531";
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
 export const getTrendingMovies = async (page = 1) => {
@@ -19,3 +19,6 @@ export const searchMovies = async (query) => {
 
   return response.data.results;
 };
+const tmdbKey = import.meta.env.VITE_TMDB_API_KEY;
+
+console.log("TMDB KEY:", tmdbKey);
