@@ -19,6 +19,3 @@ export const searchMovies = async (query) => {
 
   return response.data.results;
 };
-const tmdbKey = import.meta.env.VITE_TMDB_API_KEY;
-
-console.log("TMDB KEY:", tmdbKey);
