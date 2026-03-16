@@ -62,7 +62,7 @@ function MovieCard({ movie }) {
         <p>⭐ {movie.vote_average}</p>
       </Link>
 
-      {/* Favorite Button */}
+      {/* favorite */}
       <button
         onClick={toggleFavorite}
         style={{
