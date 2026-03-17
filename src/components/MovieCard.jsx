@@ -71,7 +71,7 @@ function MovieCard({ movie }) {
           cursor: "pointer",
         }}
       >
-        {isFavorite ? "Remove ❌" : "Add ⭐"}
+        {isFavorite ? "Remove" : "Add"}
       </button>
     </div>
   );

@@ -1,55 +1,71 @@
 import { useState } from "react";
+import SearchBar from "../components/SearchBar";
 import { searchMovies } from "../services/api";
-import MovieCard from "../components/MovieCard";
+import { useNavigate } from "react-router-dom";
 
 function Search() {
-  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
+  const navigate = useNavigate();
 
-    if (!query) return;
+  const handleSearch = async (query) => {
+    // 🔴 Empty input → clear everything
+    if (!query.trim()) {
+      setMovies([]);
+      setHasSearched(false);
+      return;
+    }
 
-    const results = await searchMovies(query);
-
-    const filteredResults = results.filter((item) => {
-      const title = (item.title || item.name || "").toLowerCase();
-      return title.includes(query.toLowerCase());
-    });
-
-    setMovies(filteredResults);
+    setLoading(true);
+    try {
+      const results = await searchMovies(query);
+      setMovies(results);
+      setHasSearched(true);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    }
+    setLoading(false);
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div>
       <h2>Search Movies</h2>
 
-      <form onSubmit={handleSearch} style={{ marginBottom: "20px" }}>
-        <input
-          type="text"
-          placeholder="Search movie..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          style={{
-            padding: "10px",
-            width: "250px",
-            marginRight: "10px",
-          }}
-        />
+      <SearchBar onSearch={handleSearch} />
 
-        <button type="submit" style={{ padding: "10px 20px" }}>
-          Search
-        </button>
-      </form>
+      {/* Loading */}
+      {loading && <p>Loading...</p>}
 
-      {movies.length === 0 && <p>No results found</p>}
+      {/* Movies */}
+      {movies.length > 0 && (
+        <div className="movies-grid">
+          {movies.map((movie) => (
+            <div
+              key={movie.id}
+              className="movie-card"
+              onClick={() => navigate(`/movie/${movie.id}`)}
+              style={{ cursor: "pointer" }}
+            >
+              <img
+                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                alt={movie.title}
+                width="150"
+              />
+              <h3>{movie.title}</h3>
+            </div>
+          ))}
+        </div>
+      )}
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
-      </div>
+      {/* No Results */}
+      {hasSearched && !loading && movies.length === 0 && (
+        <p>No results found</p>
+      )}
+
+      {/* Initial */}
+      {!hasSearched && <p>Search for movies...</p>}
     </div>
   );
 }
