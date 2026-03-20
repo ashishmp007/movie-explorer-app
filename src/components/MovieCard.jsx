@@ -37,10 +37,10 @@ function MovieCard({ movie }) {
   return (
     <div
       style={{
-        width: "200px",
-        border: "1px solid #ddd",
+        border: "1px solid #ccc",
+        borderRadius: "8px",
         padding: "10px",
-        background: "white",
+        background: "#fff",
       }}
     >
       <Link

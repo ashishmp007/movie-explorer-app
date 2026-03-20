@@ -11,7 +11,6 @@ function Search() {
   const navigate = useNavigate();
 
   const handleSearch = async (query) => {
-    // 🔴 Empty input → clear everything
     if (!query.trim()) {
       setMovies([]);
       setHasSearched(false);
